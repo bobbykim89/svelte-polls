@@ -1,5 +1,8 @@
 <script>
+  import { createEventDispatcher } from 'svelte'
   import Button from '@/shared/Button.svelte'
+
+  let dispatch = createEventDispatcher()
   let fields = {
     question: '',
     answerA: '',
@@ -38,7 +41,8 @@
 
     // add new poll
     if (valid) {
-      console.log('valid', fields)
+      let poll = { ...fields, voteA: 0, voteB: 0, id: Math.random() }
+      dispatch('add', poll)
     }
   }
 </script>
@@ -47,17 +51,23 @@
   <div class="form-field">
     <label for="question">Poll Question</label>
     <input type="text" id="question" bind:value={fields.question} />
-    <div class="error">{errors.question}</div>
+    {#if errors.question !== ''}
+      <div class="error">{errors.question}</div>
+    {/if}
   </div>
   <div class="form-field">
     <label for="answer-a">Answer A:</label>
     <input type="text" id="answer-a" bind:value={fields.answerA} />
-    <div class="error">{errors.answerA}</div>
+    {#if errors.answerA !== ''}
+      <div class="error">{errors.answerA}</div>
+    {/if}
   </div>
   <div class="form-field">
     <label for="answer-b">Answer B:</label>
     <input type="text" id="answer-b" bind:value={fields.answerB} />
-    <div class="error">{errors.answerB}</div>
+    {#if errors.andwerB !== ''}
+      <div class="error">{errors.answerB}</div>
+    {/if}
   </div>
   <Button type="secondary" flat={true}>Add Poll</Button>
 </form>
